@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <title>Nye Veier – Cloud Native Kartapp (Leaflet)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+
+  <style>
+    :root{
+      /* 🎨 Nye Veier-justerbare variabler */
+      --nv-primary: #005B82;     /* toppfarge */
+      --nv-accent:  #00A0B0;     /* markør/aksent */
+      --nv-dark:    #0B1F2A;     /* mørk bakgrunn */
+      --nv-text:    #ffffff;     /* kontrasttekst */
+      --nv-muted:   #e6eef2;     /* bakgrunn */
+      --nv-logo: url('https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg'); /* bytt til offisiell logo (SVG/PNG) */
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--nv-muted);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    .app {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    /* Header */
+    .nv-header{
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 16px;
+      background: var(--nv-dark);
+      color: var(--nv-text);
+      border-bottom: 3px solid var(--nv-accent);
+      user-select: none;
+    }
+    .nv-logo{
+      width: 34px; height: 34px; flex: 0 0 34px;
+      background-image: var(--nv-logo);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,.25));
+    }
+    .nv-title{ display: flex; flex-direction: column; line-height: 1.1; }
+    .nv-title strong{ font-weight: 700; letter-spacing: .2px; }
+    .nv-title small{ opacity: .85; font-size: .9rem; }
+
+    .nv-tools{ margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .nv-btn{
+      background: transparent; color: var(--nv-text);
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: .9rem;
+    }
+    .nv-btn:hover{ background: rgba(255,255,255,.08); }
+
+    /* Kartflate */
+    #map { width: 100%; height: 100%; }
+
+    /* Custom Leaflet-kontroll (høyre hjørne) */
+    .nv-info {
+      padding: 8px 10px;
+      background: rgba(255,255,255,.92);
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+      font-size: .9rem;
+      line-height: 1.2;
+    }
+    .nv-info b { color: #333; }
+    .leaflet-control-geolocate button{
+      background: var(--nv-primary);
+      color: #fff; border: none; border-radius: 6px;
+      padding: 6px 10px; cursor: pointer;
+    }
+    .leaflet-control-geolocate button:hover { background: #024861; }
+
+    /* Små skjermer */
+    @media (max-width: 520px){
+      .nv-title small{ display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Toppbranding -->
+    <header class="nv-header">
+      <div class="nv-logo" aria-hidden="true"></div>
